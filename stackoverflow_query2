@@ -1,0 +1,33 @@
+WITH PythonPackageTags AS (
+    SELECT
+        TagName
+    FROM
+        Tags
+    WHERE
+        TagName IN ('pandas', 'numpy', 'scipy', 'matplotlib', 'seaborn', 'scikit-learn', 'tensorflow', 'keras', 'pytorch', 'flask', 'plotly', 'sqlalchemy', 'scrapy')
+),
+PostTagData AS (
+    SELECT
+        p.Id AS PostId,
+        t.TagName,
+        p.Body AS PostBody,
+        p.CreationDate AS PostCreationDate
+    FROM
+        Posts p
+    JOIN
+        PostTags pt ON p.Id = pt.PostId
+    JOIN
+        Tags t ON pt.TagId = t.Id
+    WHERE
+        p.PostTypeId = 1 -- Questions
+        AND t.TagName IN (SELECT TagName FROM PythonPackageTags)
+)
+SELECT
+    PostId,
+    TagName,
+    PostBody,
+    PostCreationDate
+FROM
+    PostTagData
+ORDER BY
+    PostCreationDate;
