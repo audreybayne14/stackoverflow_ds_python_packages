@@ -4,9 +4,7 @@ WITH PythonPackageTags AS (
     FROM
         Tags
     WHERE
-        TagName IN ('pandas', 'numpy', 'scipy', 'matplotlib', 'seaborn', 'scikit-learn', 'tensorflow', 'keras', 'pytorch', 'statsmodels', 
-                    'plotly', 'xgboost', 'lightgbm', 'catboost', 'nltk', 'spacy', 'gensim', 'openpyxl', 'beautifulsoup4', 'scrapy', 
-                    'h5py', 'dask', 'joblib', 'sqlalchemy', 'flask')
+        TagName IN ('pandas', 'numpy', 'scipy', 'matplotlib', 'seaborn', 'scikit-learn', 'tensorflow', 'keras', 'pytorch', 'flask', 'plotly', 'sqlalchemy', 'scrapy')
 ),
 PostTagData AS (
     SELECT
