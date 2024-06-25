@@ -1,0 +1,37 @@
+WITH PythonPackageTags AS (
+    SELECT
+        TagName
+    FROM
+        Tags
+    WHERE
+        TagName IN ('pandas', 'numpy', 'scipy', 'matplotlib', 'seaborn', 'scikit-learn', 'tensorflow', 'keras', 'pytorch', 'statsmodels', 
+                    'plotly', 'xgboost', 'lightgbm', 'catboost', 'nltk', 'spacy', 'gensim', 'openpyxl', 'beautifulsoup4', 'scrapy', 
+                    'h5py', 'dask', 'joblib', 'sqlalchemy', 'flask')
+),
+PostTagData AS (
+    SELECT
+        p.CreationDate,
+        t.TagName
+    FROM
+        Posts p
+    JOIN
+        PostTags pt ON p.Id = pt.PostId
+    JOIN
+        Tags t ON pt.TagId = t.Id
+    WHERE
+        p.PostTypeId = 1 -- Questions
+        AND t.TagName IN (SELECT TagName FROM PythonPackageTags)
+)
+SELECT
+    DATEPART(year, CreationDate) AS Year,
+    DATEPART(month, CreationDate) AS Month,
+    TagName,
+    COUNT(*) AS TagCount
+FROM
+    PostTagData
+GROUP BY
+    DATEPART(year, CreationDate),
+    DATEPART(month, CreationDate),
+    TagName
+ORDER BY
+    Year, Month, TagName;
